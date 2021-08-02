@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load game_template_tags %}
+<html>
+
+    <head>
+        <title>
+            game - 
+            {% block title_block %}
+                How to Tango with Django!
+            {% endblock %}
+        </title>
+    </head>
+
+    <body>
+        <div>
+        {% block body_block %}
+        {% endblock %}  
+        </div>
+        <div>
+            {% block sidebar_block %}
+                {% get_category_list category %}
+            {% endblock %}
+        </div>
+        <hr />
+        <div>
+            <ul>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'game:restricted' %}">Restricated Page</a></li>
+                <li><a href="{% url 'game:logout' %}">Logout</a></li>
+                <li><a href="{% url 'game:add_category' %}">Add a New Category</a></li>
+            {% else %}
+                <li><a href="{% url 'game:register' %}">Sign Up</a></li>
+                <li><a href="{% url 'game:login' %}">Login</a></li>
+            {% endif %}
+                <li><a href="{% url 'game:about' %}">About</a></li>
+                <li><a href="{% url 'game:home' %}">Home</a></li>
+            </ul>
+        </div>
+    </body>
+</html>
