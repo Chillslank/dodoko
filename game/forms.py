@@ -45,3 +45,8 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = {'website', 'picture',}
+
+class ChangePassword(forms.ModelForm):
+    oldpassword = forms.CharField(label='oldpassword', max_length=30, widget=forms.PasswordInput(attrs={'size':20}))
+    newpassword = forms.CharField(label='newpassword', max_length=30, widget=forms.PasswordInput(attrs={'size':20}))
+    reppassword = forms.CharField(label='reppassword', max_length=30, widget=forms.PasswordInput(attrs={'size':20}))

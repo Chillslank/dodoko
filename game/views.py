@@ -1,20 +1,27 @@
 from typing import Container
-from game.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from game.forms import CategoryForm, PageForm, UserForm, UserProfileForm, ChangePassword
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, response
-from game.models import Category, Page
+from game.models import Category, Page, UserProfile
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from datetime import datetime
+from game.plugs import calculator_simple
+
+# weather function
+weather = "None" 
 
 def home(request):
     category_list = Category.objects.order_by('-likes')[:5]
     pages = Page.objects.order_by("-views")[:5]
 
+    global weather
+    if weather is "None":
+        weather = calculator_simple.weather()
     context_dict = {}
-    context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
+    context_dict['boldmessage'] = "Today's weather is " + weather
     context_dict['categories'] = category_list
     context_dict['pages'] = pages
 
@@ -44,7 +51,7 @@ def show_category(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
 
-        pages = Page.objects.filter(category=category)
+        pages = Page.objects.filter(category=category).order_by("-likes")
 
         context_dict['pages'] = pages
         context_dict['category'] = category
@@ -149,6 +156,32 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied.")
     else:
         return render(request, 'game/login.html')
+
+@login_required
+def change_password(request):
+
+    if request.method == 'POST':
+        username = request.user.username
+        password = request.POST.get('oldpassword')
+        newpassword = request.POST.get('newpassword')
+        reppassword = request.POST.get('reppassword')
+        
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            print(newpassword,reppassword)
+            if newpassword == reppassword:
+                user.set_password(newpassword)
+                user.save()
+                return redirect(reverse('game:account'))
+            else:
+                context_dict = {'errors': "The twice password is not same"}
+                return render(request, 'game/change.html', context=context_dict)
+        else:
+            context_dict = {'errors':"wrong password"}
+            return render(request, 'game/change.html', context=context_dict)
+    else:
+        print(request.user.username)
+        return render(request, 'game/change.html')
 
 @login_required
 def account(request):

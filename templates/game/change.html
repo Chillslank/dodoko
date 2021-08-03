@@ -1,0 +1,32 @@
+{% extends 'game/base.html' %}
+{% load static %}
+
+{% block title_block %}
+    change password
+{% endblock %}
+
+{% block body_block %}
+    <div class="jumbotron p-4">
+        <div class="container">
+            <h1 class="jumbotron-heading">Change the password</h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-6">
+                    <div class="card-body">
+                        <h3 style="color: crimson;">{{ errors }}</h3>
+                        <form class="form-signin" role="form" id="user_form" method="post" action="{% url 'game:change_password' %}">
+                            {% csrf_token %}
+                            Old Password<input type="text" name="oldpassword" id="id_oldpassword" class="form-control" placeholder="password" required autofocus>
+                            New Password<input type="text" name="newpassword" id="id_newpassword" class="form-control" placeholder="password" required autofocus>
+                            Rep Password<input type="text" name="reppassword" id="id_reppassword" class="form-control" placeholder="password" required autofocus>
+                            <button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
