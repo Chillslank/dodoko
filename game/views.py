@@ -87,6 +87,7 @@ def add_page(request, category_name_slug):
                 page = form.save(commit=False)
                 page.category = category
                 page.views = 0
+                page.likes = 0
                 page.save()
 
                 return redirect(reverse('game:show_category', kwargs={'category_name_slug':category_name_slug}))
@@ -150,8 +151,8 @@ def user_login(request):
         return render(request, 'game/login.html')
 
 @login_required
-def restricted(request):
-    return render(request, 'game/restricted.html')
+def account(request):
+    return render(request, 'game/account.html')
 
 @login_required
 def user_logout(request):

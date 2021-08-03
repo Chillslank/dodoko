@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.base import Model
-from django.template.defaultfilters import slugify
+from django.template.defaultfilters import slugify, urlencode
 
 
 class Category(models.Model):
@@ -26,6 +25,10 @@ class Page(models.Model):
     title = models.CharField(max_length=128)
     url = models.URLField()
     views = models.IntegerField(default=0)
+    likes = models.IntegerField(default=0)
+    picture = models.ImageField(upload_to='game_images', blank=True)
+    describe = models.TextField()
+    rate = models.CharField(max_length=128)
 
     def __str__(self):
         return self.title
@@ -39,3 +42,27 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+class Comment(models.Model):
+    user = models.CharField(max_length=128)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    content = models.TextField()
+    posttime = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user
+
+class WishList(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    page = models.CharField(max_length=128)
+    url = models.URLField()
+
+    def __str__(self):
+        return self.user
+
+class Operation():
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    event = models.CharField(max_length=128)
+    time = models.DateTimeField()
+
+    def __str__(self):
+        return self.event
