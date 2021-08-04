@@ -344,3 +344,9 @@ def search(request):
             result_list = run_query(query)
     
     return render(request, 'game/search.html', {'result_list': result_list, 'query': query})
+
+def privacy(request):
+    return render(request, "game/privacy.html")
+
+def terms(request):
+    return render(request, "game/terms.html")
