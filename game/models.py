@@ -30,6 +30,7 @@ class Page(models.Model):
     describe = models.TextField()
     rate = models.CharField(max_length=128)
 
+
     def __str__(self):
         return self.title
 

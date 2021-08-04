@@ -16,14 +16,14 @@ class CategoryForm(forms.ModelForm):
 class PageForm(forms.ModelForm):
     title = forms.CharField(max_length=128, help_text="Please enter the title of the Game.")
     url = forms.URLField(max_length=200, help_text="Please enter the URL of the Game.")
-    views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
-    likes = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
-    picture = forms.ImageField(help_text="Please upload a picture about this game.")
-    rate = forms.CharField(max_length=128, help_text="Please enter the rate of this Game.")
+    views = forms.IntegerField(widget=forms.HiddenInput(), initial=0, required=False)
+    likes = forms.IntegerField(widget=forms.HiddenInput(), initial=0, required=False)
+    picture = forms.ImageField(help_text="Please upload a picture about this game.", required=False)
+    rate = forms.CharField(max_length=128, help_text="Please enter the rate of this Game.", required=False)
 
     class Meta:
         model = Page
-        exclude = ('category',)
+        exclude = ('category','image')
 
     def clean(self):
         cleaned_data = self.cleaned_data

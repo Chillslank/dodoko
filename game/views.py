@@ -1,8 +1,10 @@
 from typing import Container
+
+from django.template.defaultfilters import title
 from game.forms import CategoryForm, PageForm, UserForm, UserProfileForm, ChangePassword
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, response
-from game.models import Category, Page, UserProfile
+from game.models import Category, Comment, Page, UserProfile
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -61,6 +63,24 @@ def show_category(request, category_name_slug):
         context_dict['pages'] = None
     return render(request, 'game/category.html', context=context_dict)
 
+def show_page(request, category_name_slug):
+    context_dict = {}
+    try:
+        title = request.GET["game"]
+        game = Page.objects.get(category=category_name_slug, title=title)
+        id = game.id
+        context_dict['game'] = game
+        try:
+            comments = Comment.objects.get(page=id)
+            context_dict['comments'] = comments
+        except Comment.DoesNotExist:
+            context_dict['comments'] = None
+    except Category.DoesNotExist:
+        context_dict['game'] = None
+    
+    return render(request, 'game/Game.html/', context=context_dict)
+    
+
 @login_required
 def add_category(request):
     form = CategoryForm()
@@ -74,6 +94,7 @@ def add_category(request):
         else:
             print(form.errors)
     return render(request, 'game/add_category.html', {'form': form})
+    
 
 @login_required
 def add_page(request, category_name_slug):
