@@ -1,0 +1,39 @@
+{% extends 'game/base.html' %}
+{% load static %}
+    
+{% block title_block %}
+    {{ game.title }}
+{% endblock %}
+
+{% block body_block %}
+    <div class="jumbotron p-4" style="background-image: url(../../../../static/images/anbo.jpg) ;">
+        <div class="container">
+            <h1 class="jumbotron-heading">{{ game.title }}</h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-6">
+                    <div class="card-body">
+                         <a href="{{ game.url }}">{{ game.title }} Portal</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mb-6">
+                    <div class="card-body">
+                        {% if comments %}
+                            {% for comment in comments %}
+                                {{ comment.content }}
+                            {% endfor %}
+                        {% else %}
+                            <strong> There is no comments currently in this Game. </strong>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
