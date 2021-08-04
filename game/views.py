@@ -244,10 +244,10 @@ def user_login(request):
                 login(request, user)
                 return redirect(reverse('game:home'))
             else:
-                return HttpResponse("Your game account is disabled.")
+                return render(request, 'game/login.html', context={'errors':"Your game account is disabled."})
         else:
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            return render(request, 'game/login.html', context={'errors':"Invalid login details supplied."})
     else:
         return render(request, 'game/login.html')
 

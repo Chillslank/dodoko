@@ -13,6 +13,7 @@
 </div>
 <div class="container">
     <form class="form-signin" role="form" id="login_form" method="post" action="{% url 'game:login' %}">
+        <a style="color: orangered;">{{ errors }}</a>
         {% csrf_token %}
         <label for="inputUsername" class="sr-only">Username</label>
         <input type="text" name="username" id="id_username" class="form-control" placeholder="Username" required autofocus>
