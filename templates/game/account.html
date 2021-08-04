@@ -6,6 +6,57 @@
 {% endblock %}
 
 {% block body_block %}
-    Account
+    <div class="jumbotron p-4" id="bgp_home">
+        <div class="container">
+            <h1 class="jumbotron-heading">{{ user.username }}'s Account</h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-6">
+                    <div class="card-body">
+                        <h4>Here are your comments of the game.</h4>
+                        {% if wishlists %}
+                            {% for wishlist in wishlists %}
+                                <hr>
+                                <a style="font-size: 10px;">{{ wishlist.page }}</a>
+                                <div class="card mb-6" style="width: 50%;">
+                                    <div class="card-body">
+                                        <a href="{{ wishlist.url }}" style="font-size: 20px;">{{ wishlist.page }}</a>
+                                    </div>
+                                    <button class="btn btn-primary" id="delete_btn_comment" value="{{ user.username }}%%{{ wishlist.url }}" onclick="del_wishlist(this)">Delete this game</button>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            You have not added any games. 
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-6">
+                    <div class="card-body">
+                        <h4>Here are your comments of the game.</h4>
+                        {% if comments %}
+                            {% for comment in comments %}
+                            <div class="card mb-6">
+                                <div class="card-body">
+                                you said in {{ comment.page }}:
+                                <br />
+                                {{ comment.content }}
+                                <button id="delete_btn_comment" value="{{ user.username }}%%{{ comment.page }}%%{{ comment.content }}" onclick="del_comment(this)">Delete this comment</button>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <strong>You have not posted any comments. </strong> 
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
 
+
+        </div>
+    </div>
 {% endblock %}

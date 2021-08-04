@@ -16,7 +16,65 @@
             <div class="col-md-6">
                 <div class="card mb-6">
                     <div class="card-body">
-                         <a href="{{ game.url }}">{{ game.title }} Portal</a>
+                        <a href="{{ game.url }}">{{ game.title }} Portal</a>
+                        <br />
+                        <br />
+                        
+                        <img style="width:500px;height:300px;" src="{% static 'images/game.jpg' %}" >
+                        <br />
+                        &lt;a demo of game for this moment&gt;
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mb-6">
+                    <div class="card-body">
+                        This page has been viewed <strong><a>{{ game.views }}</a></strong> times.
+                        <br />
+                        <br />
+                        <strong><a>{{ game.likes }}</a></strong> people Like this game!
+                        <br />
+                        <input type="hidden" name="gameId_likes" id="gameId_likes" value="{{ game.title }}">
+                        <input type="hidden" name="username_likes" id="username_likes" value="{{ user.username }}">
+                        <input class="btn btn-primary" type="button" name="likes" id="btn_likes" value="Like this game?">
+                        <br />
+                        <br />
+                        <div class="card mb-6">
+                            {% if user.is_authenticated %}
+                            <div class="card-body" id="game_wishlist" style="background-color: grey;">
+                                <span class="word_size">Add this game to your Wish List</span>
+                                <input type="hidden" name="game_url" id="game_url" value="{{ game.url }}">
+                                <img style="width:25px;height:25px;" id="star_game" src="{% static 'images/star.png' %}" />
+                            </div>
+                            {% else %}
+                            <strong> You should login in before add game to wishlist.</strong>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-6">
+                    <div class="card-body">
+                        <h3>About this game</h3>
+                        {{ game.describe }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mb-6">
+                    <div class="card-body">
+                        <h4>Add your comment :)</h4>
+                        {% if user.is_authenticated %}
+                        <input type="hidden" name="gameTitle_comments" id="gameTitle_comments" value="{{ game.title }}">
+                        <input type="hidden" name="username_comments" id="username_comments" value="{{ user.username }}">
+                        <textarea style="width:500px;" type="text" name="comment_comments" id="comment_comments"></textarea><br />
+                        <input class="btn btn-primary" type="button" name="comments" id="btn_comment" value="comment">
+                        {% else %}
+                            <strong>Sorry, you have not logged in yet!</strong>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -25,8 +83,14 @@
                 <div class="card mb-6">
                     <div class="card-body">
                         {% if comments %}
+                        
                             {% for comment in comments %}
+                            <div class="card mb-6">
+                                <div class="card-body">
+                                <strong>{{ comment.user }} said:<br /></strong>
                                 {{ comment.content }}
+                                </div>
+                            </div>
                             {% endfor %}
                         {% else %}
                             <strong> There is no comments currently in this Game. </strong>
@@ -34,6 +98,8 @@
                     </div>
                 </div>
             </div>
+            
+
         </div>
     </div>
 {% endblock %}

@@ -1,0 +1,38 @@
+#bgp_category {
+    background-image: url("../images/diluke.jpg");
+}
+
+#bgp_home {
+    background-image: url("../images/bg1.jpg");
+}
+
+#bgp_about {
+    background-image: url("../images/bg2.jpg");
+}
+
+#bgp_search {
+    background-image: url("../images/bg3.jpg");
+}
+
+.word_size {
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
+}
+
+#disappare {
+    top: 18%;
+    left: 46%;
+    border: 3px solid #ccc;
+    border-radius: 5px;
+    background: #fff;
+    font-size: 20px;
+    width: 290px;
+    height: 67px;
+    position: fixed;
+    
+    background-color: rgb(131, 131, 131);
+    color: rgb(255, 175, 55);
+    opacity: 0.7; 
+    filter:alpha(opacity=70); 
+}

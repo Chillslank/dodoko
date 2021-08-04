@@ -3,7 +3,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE','dodoko.settings')
 
 import django
 django.setup()
-from game.models import Category, Page
+from game.models import Category, Page, Comment
+from game.forms import UserForm, UserProfileForm
 
 
 def populate():
@@ -82,15 +83,31 @@ def populate():
             'CAG':{'pages': CAG_pages, 'views':23224, 'likes':9887},
             'SLG':{'pages': SLG_pages, 'views':12902, 'likes':3223}
     }
+    requests = [{"username":"ricky", "password":"12345678","email":"2519768W@student.gla.ac.uk","website":"http://www.youtube.com"},
+                {"username":"Mike", "password":"12345678","email":"2517510L@student.gla.ac.uk","website":"http://www.youtube.com"},
+                {"username":"Jack", "password":"12345678","email":"2529220H@student.gla.ac.uk","website":"http://www.youtube.com"},
+                {"username":"Tom", "password":"12345678","email":"2600997G@student.gla.ac.uk","website":"http://www.youtube.com"},
+                ]
+    comments = ["this game is outstanding","I like this game, it brings me a different kind of fun. Recommended","Do you know. This game is great. The picture quality is excellent and the gameplay is rich."]
 
     for cat, cat_data in cats.items():
         c = add_cat(cat, cat_data['views'], cat_data['likes'])
         for p in cat_data['pages']:
-            add_page(c, p['title'], p['url'], p['views'],p['likes'],p['describe'])
+            p = add_page(c, p['title'], p['url'], p['views'],p['likes'],p['describe'])
+            curser = 0
+            for request in requests:
+                add_comment(p, request["username"], comments[curser])
+                #print(request["username"])
+                #print(comments[curser])
+                curser += 1
+                if curser >= len(comments):
+                    curser = 0
 
     for c in Category.objects.all():
         for p in Page.objects.filter(category=c):
             print(f'- {c}: {p}')
+    
+
 
 def add_page(cat, title, url, views=0, likes=0, describe=''):
     p = Page.objects.get_or_create(category=cat, title=title)[0]
@@ -107,6 +124,12 @@ def add_cat(name, views, likes):
     c.likes = likes
     c.save()
     return c
+
+def add_comment(page, user, content):
+    c = Comment.objects.get_or_create(page=page, user=user, content=content)[0]
+    c.save()
+    return c
+        
 
 if __name__ == '__main__':
     print('Starting Game population script...')

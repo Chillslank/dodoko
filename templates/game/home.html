@@ -8,7 +8,7 @@
 
 
 {% block body_block %}
-    <div class="jumbotron p-4">
+    <div class="jumbotron p-4" id="bgp_home">
         <div class="container">
             <h1 class="jumbotron-heading">Dodoko Gaming Platform</h1>
             <div>
@@ -52,6 +52,7 @@
                     <div class="card-body">
                         <h2>Most Viewed Games</h2>
                         <p class="card-text">
+                            Fast gate to game store.
                         {% if pages %}
                         {% for page in pages %}
                                 <a class="list-group-item" href="{{ page.url }}">· {{ page.title }}</a>

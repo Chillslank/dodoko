@@ -1,16 +1,16 @@
-from typing import Container
-
+from django.contrib.auth.models import User
 from django.template.defaultfilters import title
 from game.forms import CategoryForm, PageForm, UserForm, UserProfileForm, ChangePassword
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, response
-from game.models import Category, Comment, Page, UserProfile
+from game.models import Category, Comment, Page, UserProfile, WishList
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from datetime import datetime
 from game.plugs import calculator_simple
+from game.bing_search import run_query
 
 # weather function
 weather = "None" 
@@ -27,7 +27,7 @@ def home(request):
     context_dict['categories'] = category_list
     context_dict['pages'] = pages
 
-    visitor_cookie_handler(request)
+    #visitor_cookie_handler(request)
     #context_dict['visits'] = request.session['visits']
     response = render(request, 'game/home.html', context=context_dict)
     #visitor_cookie_handler(request, response)
@@ -41,8 +41,8 @@ def about(request):
     print(request.user)
 
     context_dict = {}
-    visitor_cookie_handler(request)
-    context_dict['visits'] = request.session['visits']
+    #visitor_cookie_handler(request)
+    #context_dict['visits'] = request.session['visits']
     #if request.session.test_cookie_worked():
     #    print("TEST COOKIE WORKED!")
     #    request.session.delete_test_cookie()
@@ -69,9 +69,10 @@ def show_page(request, category_name_slug):
         title = request.GET["game"]
         game = Page.objects.get(category=category_name_slug, title=title)
         id = game.id
+        visitor_cookie_handler(request, game)
         context_dict['game'] = game
         try:
-            comments = Comment.objects.get(page=id)
+            comments = Comment.objects.filter(page=id)
             context_dict['comments'] = comments
         except Comment.DoesNotExist:
             context_dict['comments'] = None
@@ -95,6 +96,77 @@ def add_category(request):
             print(form.errors)
     return render(request, 'game/add_category.html', {'form': form})
     
+def likes_page(request):
+    username = request.GET["username"]
+    title = request.GET["game"]
+    try:
+        game = Page.objects.get(title=title)
+        game.likes += 1
+        game.save()
+    except Page.DoesNotExist:
+        return HttpResponse("errors")
+    
+    return HttpResponse("success")
+
+def comments(request):
+    username = request.GET["username"]
+    title = request.GET["game"]
+    comment = request.GET["comment"]
+    try:
+        p = Page.objects.get(title=title)
+        comm = Comment()
+        comm.page = p
+        comm.user=username
+        comm.content = comment
+        comm.save()
+    except Page.DoesNotExist:
+        return HttpResponse("errors")
+    return HttpResponse("success")
+
+def wishlist(request):
+    username = request.GET['username']
+    url = request.GET['url']
+    title = request.GET['title']
+    try:
+        
+        user = User.objects.get(username=username)
+        userpro = UserProfile.objects.get(user=user)
+        wishlist = WishList.objects.filter(user=userpro,url=url)
+        if not wishlist:
+            wishlist = WishList()
+            wishlist.user = userpro
+            wishlist.url = url
+            wishlist.page = title
+            wishlist.save()
+        else:
+            return HttpResponse("have")
+    except User.DoesNotExist:
+        return HttpResponse("errors")
+    return HttpResponse("success")
+
+def delete_comment(request):
+    username, title, content = request.GET['content'].split("%%")
+    #user = request.GET['user']
+    try:
+        pages = Page.objects.filter(title=title)
+        for i in pages:
+            Comment.objects.filter(page=i, content=content).delete()
+    except Comment.DoesNotExist:
+        return HttpResponse("errors")
+    return HttpResponse("success")
+
+def delete_wishlist(request):
+    username, url = request.GET['content'].split("%%")
+    try:
+        print(username)
+        print(url)
+        
+        user = User.objects.get(username=username)
+        userpro = UserProfile.objects.get(user=user)
+        WishList.objects.filter(user=userpro, url=url).delete()
+    except UserProfile.DoesNotExist:
+        return HttpResponse("errors")
+    return HttpResponse("success")
 
 @login_required
 def add_page(request, category_name_slug):
@@ -133,6 +205,7 @@ def register(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         profile_form = UserProfileForm(request.POST)
+        print(request.POST)
 
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
@@ -206,7 +279,24 @@ def change_password(request):
 
 @login_required
 def account(request):
-    return render(request, 'game/account.html')
+    print(request.user)
+    username = request.user
+    context_dict = {}
+    try:
+        user = User.objects.get(username=username)
+        try:
+            userpro = UserProfile.objects.get(user=user)
+            comment = Comment.objects.filter(user=username)
+            wishlist = WishList.objects.filter(user=userpro)
+            context_dict['wishlists'] = wishlist
+            context_dict['comments'] = comment
+            #context_dict['user'] = userpro
+        except UserProfile.DoesNotExist:
+            context_dict['user'] = None
+    except User.DoesNotExist:
+        context_dict['user'] = None
+    
+    return render(request, 'game/account.html', context=context_dict)
 
 @login_required
 def user_logout(request):
@@ -220,10 +310,11 @@ def get_server_side_cookie(request, cookie, default_val=None):
         val = default_val
     return val
 
-def visitor_cookie_handler(request):
+def visitor_cookie_handler(request, page):
 
     #visits = int(request.COOKIES.get('visits', '1'))
-    visits = int(get_server_side_cookie(request, 'visits', '1'))
+    visits = page.views
+    #visits = int(get_server_side_cookie(request, 'visits', '1'))
 
     last_visit_cookie = get_server_side_cookie(request, 'last_visit', str(datetime.now()))
     last_visit_time = datetime.strptime(last_visit_cookie[:-7], '%Y-%m-%d %H:%M:%S')
@@ -231,6 +322,8 @@ def visitor_cookie_handler(request):
 
     if (datetime.now() - last_visit_time).seconds > 1:
         visits = visits + 1
+        page.views += 1
+        page.save()
         #response.set_cookie('last_visit', str(datetime.now()))
         request.session['last_visit'] = str(datetime.now())
     else:
@@ -239,3 +332,15 @@ def visitor_cookie_handler(request):
 
     #response.set_cookie('visits', visits)
     request.session['visits'] = visits
+
+def search(request):
+    result_list = []
+    query = ''
+
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+
+        if query:
+            result_list = run_query(query)
+    
+    return render(request, 'game/search.html', {'result_list': result_list, 'query': query})

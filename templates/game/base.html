@@ -16,6 +16,7 @@
         </title>
         <link href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://getbootstrap.com/docs/4.2/examples/dashboard/dashboard.css" rel="stylesheet">
+        <link href="{% static 'css/general.css' %}" rel="stylesheet">
         <style type="text/css">
             html,body {
                 height: 100%;
@@ -38,15 +39,17 @@
                             <a class="nav-link" href="{% url 'game:home' %}">Home</a></li>
                         <li class="nav-item ">
                             <a class="nav-link" href="{% url 'game:about' %}">About</a></li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{% url 'game:search' %}">Search</a></li>
                         {% if user.is_authenticated %}
                         <li class="nav-item ">
                             <a class="nav-link" href="{% url 'game:account' %}">Account</a></li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'game:logout' %}?next=/game/">Logout</a></li>
-                        <li class="nav-item">
                             <a class="nav-link" href="{% url 'game:add_category' %}">Add Category</a></li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'game:change_password' %}">Change Password</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'game:logout' %}?next=/game/">Logout</a></li>
                         {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'game:register' %}">Register Here</a></li>
@@ -91,5 +94,7 @@
         <script src="https://getbootstrap.com/docs/4.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
         <script src="https://getbootstrap.com/docs/4.2/examples/dashboard/dashboard.js"></script>
+        <script src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+        <script src="{% static 'js/general.js' %}"></script>
     </body>
 </html>
