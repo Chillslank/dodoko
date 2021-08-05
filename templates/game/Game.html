@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body_block %}
-    <div class="jumbotron p-4" style="background-image: url(../../../../static/images/anbo.jpg) ;">
+    <div class="jumbotron p-4" id="bgp_page">
         <div class="container">
             <h1 class="jumbotron-heading">{{ game.title }}</h1>
         </div>
@@ -42,7 +42,7 @@
                         <br />
                         <div class="card mb-6">
                             {% if user.is_authenticated %}
-                            <div class="card-body" id="game_wishlist" style="background-color: grey;">
+                            <div class="card-body wishlist_add_to" id="game_wishlist">
                                 <span class="word_size">Add this game to your Wish List</span>
                                 <input type="hidden" name="game_url" id="game_url" value="{{ game.url }}">
                                 <img style="width:25px;height:25px;" id="star_game" src="{% static 'images/star.png' %}" />

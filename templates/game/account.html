@@ -20,10 +20,10 @@
                         {% if wishlists %}
                             {% for wishlist in wishlists %}
                                 <hr>
-                                <a style="font-size: 10px;">{{ wishlist.page }}</a>
-                                <div class="card mb-6" style="width: 50%;">
+                                <a class="account_wishlist_page">{{ wishlist.page }}</a>
+                                <div class="card mb-6 account_wishlist_card">
                                     <div class="card-body">
-                                        <a href="{{ wishlist.url }}" style="font-size: 20px;">{{ wishlist.page }}</a>
+                                        <a href="{{ wishlist.url }}" class="account_wishlist_url">{{ wishlist.page }}</a>
                                     </div>
                                     <button class="btn btn-primary" id="delete_btn_comment" value="{{ user.username }}%%{{ wishlist.url }}" onclick="del_wishlist(this)">Delete this game</button>
                                 </div>
@@ -45,7 +45,8 @@
                                 you said in {{ comment.page }}:
                                 <br />
                                 {{ comment.content }}
-                                <button id="delete_btn_comment" value="{{ user.username }}%%{{ comment.page }}%%{{ comment.content }}" onclick="del_comment(this)">Delete this comment</button>
+                                <br />
+                                <button class="btn btn-primary" id="delete_btn_comment" value="{{ user.username }}%%{{ comment.page }}%%{{ comment.content }}" onclick="del_comment(this)">Delete this comment</button>
                                 </div>
                             </div>
                             {% endfor %}

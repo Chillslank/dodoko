@@ -40,8 +40,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
+
     'game'
 ]
+
+SITE_ID = 1
+
+LOGIN_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,6 +65,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'dodoko.urls'
+AUTHENTICATION_BACKENDS = (
+    # Django backend can log in independently of allauth
+    'django.contrib.auth.backends.ModelBackend',
+
+    # Configure allauth unique authentication method, such as email login
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 TEMPLATES = [
     {
@@ -129,6 +147,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 
 # Static files (CSS, JavaScript, Images)

@@ -119,6 +119,13 @@ def comments(request):
         comm.user=username
         comm.content = comment
         comm.save()
+        user = User.objects.get(username=username)
+        try:
+            userpro = UserProfile.objects.get(user=user)
+        except UserProfile.DoesNotExist:
+            userpro = UserProfile()
+            userpro.user = user
+            userpro.save()
     except Page.DoesNotExist:
         return HttpResponse("errors")
     return HttpResponse("success")
@@ -141,8 +148,20 @@ def wishlist(request):
         else:
             return HttpResponse("have")
     except User.DoesNotExist:
-        return HttpResponse("errors")
+        userpro = UserProfile()
+        userpro.user = user
+        userpro.save()
+        wishlist = WishList.objects.filter(user=userpro,url=url)
+        if not wishlist:
+            wishlist = WishList()
+            wishlist.user = userpro
+            wishlist.url = url
+            wishlist.page = title
+            wishlist.save()
+        else:
+            return HttpResponse("have")
     return HttpResponse("success")
+
 
 def delete_comment(request):
     username, title, content = request.GET['content'].split("%%")
@@ -266,7 +285,7 @@ def change_password(request):
             if newpassword == reppassword:
                 user.set_password(newpassword)
                 user.save()
-                return redirect(reverse('game:account'))
+                return redirect(reverse('game:home'))
             else:
                 context_dict = {'errors': "The twice password is not same"}
                 return render(request, 'game/change.html', context=context_dict)
@@ -290,9 +309,16 @@ def account(request):
             wishlist = WishList.objects.filter(user=userpro)
             context_dict['wishlists'] = wishlist
             context_dict['comments'] = comment
-            #context_dict['user'] = userpro
+            context_dict['user'] = user
         except UserProfile.DoesNotExist:
-            context_dict['user'] = None
+            userpro = UserProfile()
+            userpro.user = user
+            userpro.save()
+            comment = Comment.objects.filter(user=username)
+            wishlist = WishList.objects.filter(user=userpro)
+            context_dict['wishlists'] = wishlist
+            context_dict['comments'] = comment
+            context_dict['user'] = user
     except User.DoesNotExist:
         context_dict['user'] = None
     

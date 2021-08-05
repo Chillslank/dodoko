@@ -14,6 +14,10 @@
     background-image: url("../images/bg3.jpg");
 }
 
+#bgp_page {
+    background-image: url("../images/anbo.jpg");
+}
+
 .word_size {
     font-size: 20px;
     color: black;
@@ -35,4 +39,69 @@
     color: rgb(255, 175, 55);
     opacity: 0.7; 
     filter:alpha(opacity=70); 
+}
+
+.login_input_style {
+    text-align: center;
+    border: brown;
+}
+
+.login_input_style input {
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 3px;
+    padding: 13px 14px;
+    width: 70%;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Microsoft soft";
+}
+
+.login_input_style label {
+    font-size: 20px;
+    margin-right: 5%;
+}
+
+
+.login_third_part_style ul {
+    width: 28%;
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+    background: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    padding: 1.5em;
+    margin: 2%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.login_third_part_style li {
+    list-style:none;
+    width:100px;
+    height:30px;
+    border-radius:5px 5px 0px 0px;
+    border:1px solid #ccc;
+    border-bottom:none;
+    text-align: center;
+    line-height: 30px;
+    background-color:#EEEEEE;
+    float: left;
+    color:black;
+    font-weight: 800;
+    margin-left:5px;
+}
+.account_wishlist_url {
+    font-size: 25px;
+}
+.account_wishlist_page {
+    font-size: 10px;
+}
+
+.account_wishlist_card {
+    width: 80%;
+}
+
+.wishlist_add_to {
+    background-color: rgb(209, 209, 209);
 }
