@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.baidu',
 
     'game'
 ]
@@ -65,6 +67,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'dodoko.urls'
+
 AUTHENTICATION_BACKENDS = (
     # Django backend can log in independently of allauth
     'django.contrib.auth.backends.ModelBackend',
@@ -149,6 +152,8 @@ USE_TZ = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
+
 
 
 # Static files (CSS, JavaScript, Images)
