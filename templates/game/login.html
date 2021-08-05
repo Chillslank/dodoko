@@ -12,13 +12,13 @@
     </div>
 </div>
 <div class="container">
-    <form class="form-signin" role="form" id="login_form" method="post" action="{% url 'game:login' %}">
+    <form class="form-signin" role="form" id="login_form" method="post" action="{% url 'game:login' %}"  style="width: 30%;">
         <a style="color: orangered;">{{ errors }}</a>
         {% csrf_token %}
-        <label for="inputUsername" class="sr-only">Username</label>
-        <input type="text" name="username" id="id_username" class="form-control" placeholder="Username" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="password" id="id_password" class="form-control" placeholder="Password" required>
+        <label for="inputUsername" class="login_label">Username</label>
+        <input type="text" name="username" id="id_username" class="form-control register_input" placeholder="Username" required autofocus>
+        <label for="inputPassword" class="login_label">Password</label>
+        <input type="password" name="password" id="id_password" class="form-control register_input" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit">Sign in</button>
     </form>
 </div>

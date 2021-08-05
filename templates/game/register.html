@@ -26,16 +26,16 @@
                     {{ user_form.errors }}
                     {{ profile_form.errors }}
                 </ul>
-                Username<input type="text" name="username" id="id_username" class="form-control" placeholder="Username" required autofocus>
-                Email<input type="text" name="email" id="id_email" class="form-control" placeholder="email">
-                Password<input type="text" name="password" id="id_password" class="form-control" placeholder="password" required autofocus>
-                Picture<input type="file" name="picture" id="id_picture" class="form-control">
-                Website<input type="text" name="website" id="id_website" class="form-control" placeholder="website">
+                Username<input type="text" name="username" id="id_username" class="form-control register_input" placeholder="Username" required autofocus >
+                Email<input type="text" name="email" id="id_email" class="form-control register_input" placeholder="email" >
+                Password<input type="text" name="password" id="id_password" class="form-control register_input" placeholder="password" required autofocus>
+                Picture<input type="file" name="picture" id="id_picture" class="form-control register_input">
+                Website<input type="text" name="website" id="id_website" class="form-control register_input" placeholder="website">
                 <!--
                     <strong>{{ user_form.as_p }}
                 {{ profile_form.as_p }}</strong>
                 -->
-                <button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit">Register</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit" style="margin-top: 20px;">Register</button>
             </form>
             
         </div>

@@ -1,0 +1,66 @@
+.sun {
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    width: 2.5em;
+    height: 2.5em;
+    margin: -1.25em;
+    background: #000;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0.375em #000;
+    animation: spin 12s infinite linear;
+}
+.rays {
+    position: absolute;
+    top: -2em;
+    left: 50%;
+    display: block;
+    width: 0.375em;
+    height: 1.125em;
+    margin-left: -0.1875em;
+    background: #000;
+    border-radius: 0.25em;
+    box-shadow: 0 5.375em #000;
+}
+.rays:before,
+.rays:after {
+    content: '';
+    position: absolute;
+    top: 0em;
+    left: 0em;
+    display: block;
+    width: 0.375em;
+    height: 1.125em;
+    transform: rotate(60deg);
+    transform-origin: 50% 3.25em;
+    background: #000;
+    border-radius: 0.25em;
+    box-shadow: 0 5.375em #000;
+}
+.rays:before {
+    transform: rotate(120deg);
+}
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+.list-group-item {
+    opacity: 0;
+    animation: movein .5s 1 forwards;
+}
+@keyframes movein {
+    from {
+      transform: translateX(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+}
+.p-2 img {
+    width: 64px;
+    height: 28px;
+}
+.register_input {
+    margin-top: 10px; margin-bottom: 10px;
+}
