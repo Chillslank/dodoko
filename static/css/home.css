@@ -43,7 +43,7 @@
 @keyframes spin {
     100% { transform: rotate(360deg); }
 }
-.list-group-item {
+.home-list-group-item {
     opacity: 0;
     animation: movein .5s 1 forwards;
 }

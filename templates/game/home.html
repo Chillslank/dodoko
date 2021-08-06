@@ -40,7 +40,7 @@
                         {% if categories %}
                             <!--<ul>-->
                             {% for category in categories %}
-                            <a class="list-group-item" href="{% url 'game:show_category' category.slug %}">· {{ category.name }}</a>
+                            <a class="list-group-item home-list-group-item" href="{% url 'game:show_category' category.slug %}">· {{ category.name }}</a>
                             
                             {% endfor %}
                             <!--</ul>-->
@@ -60,7 +60,7 @@
                             Fast gate to game store.
                         {% if pages %}
                         {% for page in pages %}
-                                <a class="list-group-item" href="{{ page.url }}">· {{ page.title }}</a>
+                                <a class="list-group-item home-list-group-item" href="{{ page.url }}">· {{ page.title }}</a>
                         {% endfor %}
                         {% else %}
                             <strong>There are no pages present.</strong>
