@@ -1,8 +1,8 @@
 $(document).ready(function(){
     $('#btn_likes').click(function() {    
-        var name = $('#username_likes').val();
+        var username = $('#username_likes').val();
         var game = $('#gameId_likes').val();
-        $.get("/game/category/page/likes/",{'username':name, 'game':game}, 
+        $.get("/game/category/page/likes/",{'username':username, 'game':game}, 
         function(ret){ 
             if (ret == "success") {
                 alert("your thumbs up!");
@@ -25,7 +25,7 @@ $(document).ready(function(){
     });
 
     $('#game_wishlist').click(function() {
-        var name = $('#username_likes').val();
+        var name = $('#username_wishlist').val();
         var url = $('#game_url').val();
         var title = $('#gameId_likes').val();
         $.get("/game/category/page/wishlist/",{'username':name, 'url':url, 'title':title},
