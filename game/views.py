@@ -38,6 +38,7 @@ def home(request):
     #return render(request, 'game/home.html', context=context_dict)
     return response
 
+# about page
 def about(request):
     print(request.method)
     print(request.user)
@@ -50,6 +51,8 @@ def about(request):
     #    request.session.delete_test_cookie()
     return render(request, 'game/about.html', context=context_dict)
 
+
+# show the category
 def show_category(request, category_name_slug):
     context_dict = {}
     try:
@@ -65,6 +68,7 @@ def show_category(request, category_name_slug):
         context_dict['pages'] = None
     return render(request, 'game/category.html', context=context_dict)
 
+# show page
 def show_page(request, category_name_slug):
     context_dict = {}
     try:
@@ -83,7 +87,7 @@ def show_page(request, category_name_slug):
     
     return render(request, 'game/Game.html/', context=context_dict)
     
-
+#add categories page need login
 @login_required
 def add_category(request):
     form = CategoryForm()
@@ -97,9 +101,11 @@ def add_category(request):
         else:
             print(form.errors)
     return render(request, 'game/add_category.html', {'form': form})
-    
+
+#user likes the game click this
 def likes_page(request):
     username = request.GET["username"]
+    #just use title to search the record
     title = request.GET["game"]
     try:
         game = Page.objects.filter(title=title)[0]

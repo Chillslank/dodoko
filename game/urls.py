@@ -20,6 +20,7 @@ urlpatterns = [
     path('account/delete_wishlist/', views.delete_wishlist, name='delete_wishlist'),
     path('logout/', views.user_logout, name='logout'),
     path('change/', views.change_password, name='change_password'),
+    #search function
     path('search/', views.search, name='search'),
     path('privacy/', views.privacy, name='privacy'),
     path('terms/', views.terms, name="terms"),
