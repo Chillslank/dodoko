@@ -1,10 +1,13 @@
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE','dodoko.settings')
-
 import django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE','dodoko.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project_name.settings")
+django.setup()
+from django.contrib.sites.models import Site
 django.setup()
 from game.models import Category, Page, Comment
 from game.forms import UserForm, UserProfileForm
+from allauth.socialaccount.models import SocialApp
 
 
 def populate():
@@ -90,6 +93,9 @@ def populate():
                 ]
     comments = ["this game is outstanding","I like this game, it brings me a different kind of fun. Recommended","Do you know. This game is great. The picture quality is excellent and the gameplay is rich."]
 
+    api = [['google','dodoko','924991238994-96ji9edegomjd88cui6et37b99afuavd.apps.googleusercontent.com','so8hRtowDJPOnMqbkaXhNgEs','http://127.0.0.1:8000'],
+            ['github','dodoko','43185896e7c0bd1c4770','79af24f6372216f17edd607b4c738d969db6da07','http://127.0.0.1:8000']]
+
     for cat, cat_data in cats.items():
         c = add_cat(cat, cat_data['views'], cat_data['likes'])
         for p in cat_data['pages']:
@@ -106,8 +112,26 @@ def populate():
     for c in Category.objects.all():
         for p in Page.objects.filter(category=c):
             print(f'- {c}: {p}')
-    
 
+    try:
+        sit = Site.objects.get(domain = 'example.com')
+        sit.domain = 'http://127.0.0.1:8000'
+        sit.name = 'http://127.0.0.1:8000'
+        sit.save()
+    except:
+        sit = Site.objects.get_or_create('http://127.0.0.1:8000')[0]
+        sit.save()
+
+    for i in api:
+        add_SocialApp(i[0],i[1],i[2],i[3], i[4])
+    
+def add_SocialApp(provider, name, client_id, secret, domain):
+    si = Site.objects.filter(domain = domain)
+    s = SocialApp.objects.get_or_create(provider=provider, name=name, client_id=client_id, secret=secret)[0]
+    s.sites.set(si)
+    #s.sites.set(Site())
+    s.save()
+    return s
 
 def add_page(cat, title, url, views=0, likes=0, describe=''):
     p = Page.objects.get_or_create(category=cat, title=title)[0]
