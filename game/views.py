@@ -16,6 +16,7 @@ from game.bing_search import run_query
 # weather function
 weather = "None" 
 
+# home page
 def home(request):
     category_list = Category.objects.order_by('-likes')[:5]
     pages = Page.objects.order_by("-views")[:5]
