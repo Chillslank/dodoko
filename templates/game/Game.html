@@ -45,6 +45,7 @@
                             <div class="card-body wishlist_add_to" id="game_wishlist">
                                 <span class="word_size">Add this game to your Wish List</span>
                                 <input type="hidden" name="game_url" id="game_url" value="{{ game.url }}">
+                                <input type="hidden" name="username_wishlist" id="username_wishlist" value="{{ user.username }}">
                                 <img style="width:25px;height:25px;" id="star_game" src="{% static 'images/star.png' %}" />
                             </div>
                             {% else %}

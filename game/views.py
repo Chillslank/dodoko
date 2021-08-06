@@ -1,3 +1,4 @@
+from http import cookiejar
 from django.contrib.auth.models import User
 from django.template.defaultfilters import title
 from game.forms import CategoryForm, PageForm, UserForm, UserProfileForm, ChangePassword
@@ -100,7 +101,7 @@ def likes_page(request):
     username = request.GET["username"]
     title = request.GET["game"]
     try:
-        game = Page.objects.get(title=title)
+        game = Page.objects.filter(title=title)[0]
         game.likes += 1
         game.save()
     except Page.DoesNotExist:
@@ -139,6 +140,7 @@ def wishlist(request):
         user = User.objects.get(username=username)
         userpro = UserProfile.objects.get(user=user)
         wishlist = WishList.objects.filter(user=userpro,url=url)
+        print(user)
         if not wishlist:
             wishlist = WishList()
             wishlist.user = userpro
@@ -148,10 +150,12 @@ def wishlist(request):
         else:
             return HttpResponse("have")
     except User.DoesNotExist:
+        user = User.objects.create(username=username)
         userpro = UserProfile()
         userpro.user = user
         userpro.save()
         wishlist = WishList.objects.filter(user=userpro,url=url)
+        print(user)
         if not wishlist:
             wishlist = WishList()
             wishlist.user = userpro
